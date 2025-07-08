@@ -33,7 +33,7 @@ export interface GameState {
 
 export const useGameState = create<GameState>((set, get) => ({
   currentIPv4: '',
-  subnetMask: 1,
+  subnetMask: 0,
   hearts: 5,
   round: 1,
   timeRemaining: 120,
@@ -88,7 +88,8 @@ export const useGameState = create<GameState>((set, get) => ({
       round: state.round + 1,
       timeRemaining: 120,
       gamePhase: 'subnet-selection',
-      isCounterRunning: false
+      isCounterRunning: false,
+      subnetMask: 0
     });
     state.generateNewIPv4();
   },
@@ -103,7 +104,7 @@ export const useGameState = create<GameState>((set, get) => ({
     const highScore = get().highScore;
     set({
       currentIPv4: '',
-      subnetMask: 1,
+      subnetMask: 0,
       hearts: 5,
       round: 1,
       timeRemaining: 120,

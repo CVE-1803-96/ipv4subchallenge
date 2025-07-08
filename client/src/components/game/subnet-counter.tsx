@@ -22,23 +22,33 @@ export function SubnetCounter() {
     };
   }, [gamePhase, setCounterRunning]);
   
+  const handleSelection = () => {
+    if (gamePhase === 'subnet-selection') {
+      setSubnetMask(currentMask);
+      setCounterRunning(false);
+    }
+  };
+  
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      if (gamePhase === 'subnet-selection' && event.key === 'Enter') {
-        setSubnetMask(currentMask);
-        setCounterRunning(false);
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        handleSelection();
       }
     };
     
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [currentMask, gamePhase, setSubnetMask, setCounterRunning]);
+  }, [currentMask, gamePhase]);
   
   if (gamePhase !== 'subnet-selection') return null;
   
   return (
     <div className="text-center mb-8">
-      <div className="inline-block bg-slate-900/50 rounded-xl px-6 py-4 border border-cyan-500/30">
+      <div 
+        className="inline-block bg-slate-900/50 rounded-xl px-6 py-4 border border-cyan-500/30 cursor-pointer hover:bg-slate-900/70 transition-all duration-200"
+        onClick={handleSelection}
+      >
         <label className="block text-sm font-medium text-gray-300 mb-2">
           Subnet Mask:
         </label>
@@ -52,7 +62,7 @@ export function SubnetCounter() {
           <kbd className="bg-cyan-500/20 px-2 py-1 rounded text-cyan-400 font-mono">
             Enter
           </kbd>{' '}
-          to select subnet mask
+          to select subnet mask or click the counter
         </p>
       </div>
     </div>
