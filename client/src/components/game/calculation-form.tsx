@@ -66,9 +66,21 @@ export function CalculationForm() {
   return (
     <div className="mb-8">
       <div className="bg-slate-900/30 rounded-xl p-6 border border-cyan-500/20">
-        <h3 className="font-orbitron text-xl font-bold game-accent mb-6 text-center">
+        <h3 className="font-orbitron text-xl font-bold game-accent mb-4 text-center">
           Calculate Network Properties
         </h3>
+        
+        {/* Selected CIDR Display */}
+        <div className="text-center mb-6">
+          <div className="inline-block bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-6 py-3">
+            <label className="block text-sm font-medium text-emerald-300 mb-1">
+              Selected Network:
+            </label>
+            <div className="font-mono text-2xl font-bold text-emerald-400">
+              {currentIPv4}/{subnetMask}
+            </div>
+          </div>
+        </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">

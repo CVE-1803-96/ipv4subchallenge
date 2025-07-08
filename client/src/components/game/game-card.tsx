@@ -4,7 +4,7 @@ import { SpecialAddressSection } from './special-address-section';
 import { CalculationForm } from './calculation-form';
 
 export function GameCard() {
-  const { currentIPv4, gamePhase, setGamePhase, specialAddressInfo } = useGameState();
+  const { currentIPv4, gamePhase, setGamePhase, specialAddressInfo, subnetMask } = useGameState();
   
   // Handle phase transitions
   const handleSubnetMaskSelected = () => {
@@ -29,10 +29,10 @@ export function GameCard() {
       <div className="text-center mb-8">
         <div className="inline-block bg-slate-900/50 rounded-xl px-8 py-6 border-2 border-cyan-500/30 shadow-lg">
           <label className="block text-sm font-medium text-gray-300 mb-2">
-            Current IPv4 Address:
+            {gamePhase === 'subnet-selection' ? 'Current IPv4 Address:' : 'CIDR Notation:'}
           </label>
           <div className="font-mono text-4xl font-bold game-accent tracking-wider">
-            {currentIPv4}
+            {gamePhase === 'subnet-selection' ? currentIPv4 : `${currentIPv4}/${subnetMask}`}
           </div>
         </div>
       </div>
