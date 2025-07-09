@@ -119,3 +119,28 @@ export function isValidIPAddress(ip: string): boolean {
     return !isNaN(num) && num >= 0 && num <= 255;
   });
 }
+
+export function getIPClass(ip: string): 'A' | 'B' | 'C' | 'D' | 'E' {
+  const firstOctet = parseInt(ip.split('.')[0], 10);
+  
+  if (firstOctet >= 1 && firstOctet <= 126) return 'A';
+  if (firstOctet >= 128 && firstOctet <= 191) return 'B';
+  if (firstOctet >= 192 && firstOctet <= 223) return 'C';
+  if (firstOctet >= 224 && firstOctet <= 239) return 'D'; // Multicast
+  return 'E'; // Experimental/Reserved
+}
+
+export function getMinimumSubnetMask(ip: string): number {
+  // For special addresses, return 1 (they can use any mask for educational purposes)
+  const classification = classifyIPAddress(ip);
+  if (classification) return 1;
+  
+  // For regular addresses, follow class-based minimums
+  const ipClass = getIPClass(ip);
+  switch (ipClass) {
+    case 'A': return 8;
+    case 'B': return 16;
+    case 'C': return 24;
+    default: return 1; // D and E classes for edge cases
+  }
+}

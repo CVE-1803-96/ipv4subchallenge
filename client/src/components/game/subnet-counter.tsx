@@ -1,9 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useGameState } from '@/lib/game-state';
+import { getMinimumSubnetMask } from '@/lib/ip-utils';
 
 export function SubnetCounter() {
-  const { setSubnetMask, setCounterRunning, isCounterRunning, gamePhase } = useGameState();
+  const { setSubnetMask, setCounterRunning, isCounterRunning, gamePhase, currentIPv4 } = useGameState();
   const [currentMask, setCurrentMask] = useState(1);
+  
+  const minimumMask = getMinimumSubnetMask(currentIPv4);
+  
+  useEffect(() => {
+    // Reset counter to minimum when IP changes
+    setCurrentMask(minimumMask);
+  }, [currentIPv4, minimumMask]);
   
   useEffect(() => {
     if (gamePhase !== 'subnet-selection') return;
@@ -11,7 +19,7 @@ export function SubnetCounter() {
     setCounterRunning(true);
     const interval = setInterval(() => {
       setCurrentMask(prev => {
-        const next = prev >= 32 ? 1 : prev + 1;
+        const next = prev >= 32 ? minimumMask : prev + 1;
         return next;
       });
     }, 100);
@@ -20,7 +28,7 @@ export function SubnetCounter() {
       clearInterval(interval);
       setCounterRunning(false);
     };
-  }, [gamePhase, setCounterRunning]);
+  }, [gamePhase, setCounterRunning, minimumMask]);
   
   const handleSelection = () => {
     if (gamePhase === 'subnet-selection') {
@@ -54,6 +62,9 @@ export function SubnetCounter() {
         </label>
         <div className="font-mono text-3xl font-bold game-warning animate-counter-bounce">
           /<span>{currentMask}</span>
+        </div>
+        <div className="text-xs text-gray-400 mt-1">
+          Range: /{minimumMask} - /32
         </div>
       </div>
       <div className="mt-4">
