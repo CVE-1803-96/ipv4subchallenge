@@ -22,7 +22,7 @@ export interface GameState {
   resetHearts: () => void;
   decrementTimer: () => void;
   resetTimer: () => void;
-  nextRound: () => void;
+  nextRound: (c: number) => void;
   gameOver: () => void;
   restartGame: () => void;
   setCounterRunning: (running: boolean) => void;
@@ -75,19 +75,20 @@ export const useGameState = create<GameState>((set, get) => ({
     if (newTime <= 0) {
       get().loseHeart();
       if (get().hearts > 0) {
-        get().nextRound();
+        get().nextRound(0);
       }
     }
   },
   
   resetTimer: () => set({ timeRemaining: 120 }),
   
-  nextRound: () => {
+  nextRound: (c) => {
     const state = get();
     set({ 
       round: state.round + 1,
       timeRemaining: 120,
       gamePhase: 'subnet-selection',
+      highScore: c === 1 ? state.highScore + 10 : state.highScore,
       isCounterRunning: false,
       subnetMask: 0
     });
@@ -120,10 +121,10 @@ export const useGameState = create<GameState>((set, get) => ({
   
   updateHighScore: () => {
     const state = get();
-    if (state.round > state.highScore) {
-      set({ highScore: state.round });
+    //if (state.round > state.highScore) {
+      //set({ highScore: state.round });
       state.saveHighScore();
-    }
+    //}
   },
   
   loadHighScore: () => {

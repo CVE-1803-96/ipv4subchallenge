@@ -58,7 +58,7 @@ export function CalculationForm() {
     }
     
     if (isCorrect) {
-      nextRound();
+      nextRound(1); // Pass 1 to indicate correct answer
     } else {
       loseHeart();
     }

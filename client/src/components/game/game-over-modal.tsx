@@ -33,10 +33,11 @@ export function GameOverModal() {
               </Button>
               <Button
                 variant="outline"
-                className="bg-slate-800/50 hover:bg-slate-800/70 border border-gray-500/30 text-gray-300 font-semibold py-3 px-6 rounded-lg transition-all duration-200"
-                onClick={() => setGamePhase('subnet-selection')}
+                className="bg-slate-800/50  border border-gray-500/30 text-gray-300 font-semibold py-3 px-6 rounded-lg transition-all duration-200"
+                onClick={()=>{ window.open("https://t.me/itetopics/", "_blank");}
+}
               >
-                Close
+                Join Us
               </Button>
             </div>
           </div>
